@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Exam": {
+      "title": "Exam Metadata",
+      "description": "Information about an uploaded exam or practice set",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "questionCount": { "type": "integer" }
+      },
+      "required": ["title", "createdBy"]
+    },
+    "Question": {
+      "title": "Exam Question",
+      "description": "A single question from an exam",
+      "type": "object",
+      "properties": {
+        "examId": { "type": "string" },
+        "text": { "type": "string" },
+        "options": { "type": "array" },
+        "correctAnswer": { "type": "string" },
+        "explanation": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["examId", "text", "options", "correctAnswer"]
+    },
+    "Vocabulary": {
+      "title": "Vocabulary Word",
+      "description": "A word or phrase saved by the student",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "word": { "type": "string" },
+        "definition": { "type": "string" },
+        "example": { "type": "string" },
+        "context": { "type": "string" },
+        "nextReview": { "type": "string", "format": "date-time" },
+        "interval": { "type": "integer" },
+        "easeFactor": { "type": "number" },
+        "step": { "type": "integer" }
+      },
+      "required": ["userId", "word"]
+    },
+    "Attempt": {
+      "title": "Exam Attempt",
+      "description": "A student's attempt at an exam",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "examId": { "type": "string" },
+        "score": { "type": "number" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "performanceAnalysis": { "type": "object" }
+      },
+      "required": ["userId", "examId", "score"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profiles"
+    },
+    "/exams/{examId}": {
+      "schema": "Exam",
+      "description": "Stores exam metadata"
+    },
+    "/exams/{examId}/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Stores questions for a specific exam"
+    },
+    "/users/{userId}/vocabulary/{wordId}": {
+      "schema": "Vocabulary",
+      "description": "Stores student's saved vocabulary for SRS"
+    },
+    "/users/{userId}/attempts/{attemptId}": {
+      "schema": "Attempt",
+      "description": "Stores historical exam attempts and analytics"
+    }
+  }
+}
